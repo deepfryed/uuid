@@ -1,0 +1,7 @@
+ext/*
+!ext/extconf.rb
+!ext/*.c
+!ext/*.h
+ext/*.so
+pkg/
+tmp/

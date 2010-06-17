@@ -1,0 +1,26 @@
+= UUID
+
+A thin interface to uuid library for linux.
+
+== Installation
+
+  sudo apt-get install uuid-dev
+  sudo gem install uuid
+
+=== Dependencies
+
+* Ruby >= 1.9.1
+* rubygems >= 1.3.5
+* ruby development libraries             (debian: ruby1.9.1-dev)
+* uuid development libraries             (debian: uuid-dev)
+
+== Usage
+
+  require "UUID"
+  puts UUID.generate
+  uuid = UUID.parse("1b4e28ba-2fa1-11d2-883f-b9a761bde3fb") rescue nil
+  puts uuid.variant
+
+== License
+
+See LICENSE.
