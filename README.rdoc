@@ -19,7 +19,9 @@ A thin interface to uuid library for linux.
   require "UUID"
   puts UUID.generate
   uuid = UUID.parse("1b4e28ba-2fa1-11d2-883f-b9a761bde3fb") rescue nil
-  puts uuid.variant
+  puts uuid.compact
+  puts uuid.urn
+  puts uuid
 
 == License
 

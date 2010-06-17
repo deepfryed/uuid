@@ -4,9 +4,6 @@
 #define ID_CONST_GET rb_intern("const_get")
 #define CONST_GET(scope, constant) (rb_funcall(scope, ID_CONST_GET, 1, rb_str_new2(constant)))
 
-#define UUID2ARRAY(v,a) for (int i = 0; i < 16; i++) rb_ary_push(a, INT2NUM(v[i]))
-#define ARRAY2UUID(a,v) for (int i = 0; i < 16; i++) v[i] = NUM2INT(rb_ary_entry(a, i))
-
 static VALUE cUUID;
 static VALUE eRuntimeError;
 static VALUE eArgumentError;
@@ -14,9 +11,8 @@ static VALUE eStandardError;
 
 VALUE rb_uuid_create(uuid_t uuid_b) {
     VALUE rv   = rb_obj_alloc(cUUID);
-    VALUE uuid = rb_ary_new2(16);
+    VALUE uuid = rb_str_new((char *)uuid_b, 16);
     VALUE args[1] = { uuid };
-    UUID2ARRAY(uuid_b, uuid);
     rb_obj_call_init(rv, 1, args);
     return rv;
 }
@@ -49,14 +45,14 @@ VALUE rb_uuid_generate_random(VALUE self) {
 VALUE rb_uuid_compare(VALUE self, VALUE other) {
     uuid_t uuid_b1;
     uuid_t uuid_b2;
-    ARRAY2UUID(rb_iv_get(self,  "@uuid"), uuid_b1);
-    ARRAY2UUID(rb_iv_get(other, "@uuid"), uuid_b2);
+    memcpy(uuid_b1, RSTRING_PTR(rb_iv_get(self,  "@uuid")), 16);
+    memcpy(uuid_b2, RSTRING_PTR(rb_iv_get(other, "@uuid")), 16);
     return INT2NUM(uuid_compare(uuid_b1, uuid_b2));
 }
 
 VALUE rb_uuid_variant(VALUE self) {
     uuid_t uuid_b;
-    ARRAY2UUID(rb_iv_get(self,  "@uuid"), uuid_b);
+    memcpy(uuid_b, RSTRING_PTR(rb_iv_get(self,  "@uuid")), 16);
     return INT2NUM(uuid_variant(uuid_b));
 }
 
